@@ -4,8 +4,6 @@
 
 import UIKit
 
-private let maxVisibleContentHeight: CGFloat = 400
-
 class BottomSheetContainerView: UIView {
  
     private let mainView: UIView
@@ -33,13 +31,13 @@ class BottomSheetContainerView: UIView {
             mainView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
-        // The sheet starts after an overlap
+        // The sheet table view goes all the way up to the status bar
         addSubview(sheetView)
         sheetView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             sheetView.leftAnchor.constraint(equalTo: leftAnchor),
             sheetView.rightAnchor.constraint(equalTo: rightAnchor),
-            sheetView.topAnchor.constraint(equalTo: topAnchor, constant: maxVisibleContentHeight),
+            sheetView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             sheetView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }

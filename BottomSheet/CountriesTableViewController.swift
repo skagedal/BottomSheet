@@ -4,6 +4,8 @@
 
 import UIKit
 
+private let maxVisibleContentHeight: CGFloat = 400
+
 private let numberOfCountries = 20
 private let countries = Locale.isoRegionCodes.prefix(numberOfCountries).map(Locale.current.localizedString(forRegionCode:))
 private let reuseIdentifier = "cell"
@@ -14,6 +16,10 @@ class CountriesTableViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        
+        tableView.contentInset.top = maxVisibleContentHeight
+        tableView.backgroundColor = .clear
+        tableView.showsVerticalScrollIndicator = false
     }
     
     // MARK: - Table view data source
