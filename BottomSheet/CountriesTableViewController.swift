@@ -10,8 +10,10 @@ private let numberOfCountries = 20
 private let countries = Locale.isoRegionCodes.prefix(numberOfCountries).map(Locale.current.localizedString(forRegionCode:))
 private let reuseIdentifier = "cell"
 
-class CountriesTableViewController: UITableViewController {
-
+class CountriesTableViewController: UITableViewController, BottomSheet {
+    
+    var bottomSheetDelegate: BottomSheetDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,6 +22,12 @@ class CountriesTableViewController: UITableViewController {
         tableView.contentInset.top = maxVisibleContentHeight
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        bottomSheetDelegate?.bottomSheet(self, didScrollTo: tableView.contentOffset)
     }
     
     // MARK: - Table view data source

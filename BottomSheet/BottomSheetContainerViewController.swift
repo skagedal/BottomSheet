@@ -4,10 +4,22 @@
 
 import UIKit
 
+protocol BottomSheetDelegate: AnyObject {
+    func bottomSheet(_ bottomSheet: BottomSheet, didScrollTo contentOffset: CGPoint)
+}
+
+protocol BottomSheet: AnyObject {
+    var bottomSheetDelegate: BottomSheetDelegate? { get set }
+}
+
+typealias BottomSheetViewController = UIViewController & BottomSheet
+
 class BottomSheetContainerView: UIView {
  
     private let mainView: UIView
     private let sheetView: UIView
+    private let sheetBackground = BottomSheetBackgroundView()
+    private var sheetBackgroundTopConstraint: NSLayoutConstraint? = nil
 
     init(mainView: UIView, sheetView: UIView) {
         self.mainView = mainView
@@ -20,6 +32,12 @@ class BottomSheetContainerView: UIView {
     
     required init?(coder aDecoder: NSCoder) { fatalError() }
     
+    var topDistance: CGFloat = 0 {
+        didSet {
+            sheetBackgroundTopConstraint?.constant = topDistance
+        }
+    }
+    
     private func setupViews() {
         // The main view fills the view completely
         addSubview(mainView)
@@ -31,6 +49,18 @@ class BottomSheetContainerView: UIView {
             mainView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
+        // The sheet background
+        addSubview(sheetBackground)
+        sheetBackground.translatesAutoresizingMaskIntoConstraints = false
+        let topConstraint = sheetBackground.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
+        NSLayoutConstraint.activate([
+            topConstraint,
+            sheetBackground.heightAnchor.constraint(equalTo: heightAnchor),
+            sheetBackground.leftAnchor.constraint(equalTo: leftAnchor),
+            sheetBackground.rightAnchor.constraint(equalTo: rightAnchor)
+            ])
+        sheetBackgroundTopConstraint = topConstraint
+
         // The sheet table view goes all the way up to the status bar
         addSubview(sheetView)
         sheetView.translatesAutoresizingMaskIntoConstraints = false
@@ -47,11 +77,11 @@ class BottomSheetContainerView: UIView {
 class BottomSheetContainerViewController: UIViewController {
 
     private let mainViewController: UIViewController
-    private let sheetViewController: UIViewController
+    private let sheetViewController: BottomSheetViewController
     private lazy var bottomSheetContainerView = BottomSheetContainerView(mainView: mainViewController.view,
                                                                          sheetView: sheetViewController.view)
     
-    init(mainViewController: UIViewController, sheetViewController: UIViewController) {
+    init(mainViewController: UIViewController, sheetViewController: BottomSheetViewController) {
         self.mainViewController = mainViewController
         self.sheetViewController = sheetViewController
         
@@ -59,6 +89,8 @@ class BottomSheetContainerViewController: UIViewController {
         
         addChild(mainViewController)
         addChild(sheetViewController)
+        
+        sheetViewController.bottomSheetDelegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -75,5 +107,11 @@ class BottomSheetContainerViewController: UIViewController {
         mainViewController.didMove(toParent: self)
         sheetViewController.didMove(toParent: self)
     }
+    
+}
 
+extension BottomSheetContainerViewController: BottomSheetDelegate {
+    func bottomSheet(_ bottomSheet: BottomSheet, didScrollTo contentOffset: CGPoint) {
+        bottomSheetContainerView.topDistance = max(0, -contentOffset.y)
+    }
 }
