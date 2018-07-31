@@ -31,6 +31,7 @@ class CountriesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)!
         cell.textLabel?.text = countries[indexPath.row]
+        cell.backgroundColor = .clear
         return cell
     }
     
