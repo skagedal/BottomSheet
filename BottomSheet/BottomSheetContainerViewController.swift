@@ -72,6 +72,15 @@ class BottomSheetContainerView: UIView {
         ])
     }
 
+    // MARK: - UIView overrides
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if sheetBackground.bounds.contains(sheetBackground.convert(point, from: self)) {
+            return sheetView.hitTest(sheetView.convert(point, from: self), with: event)
+        }
+        return mainView.hitTest(mainView.convert(point, from: self), with: event)
+    }
+
 }
 
 class BottomSheetContainerViewController: UIViewController {
