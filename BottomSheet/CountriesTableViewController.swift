@@ -29,6 +29,12 @@ class CountriesTableViewController: UITableViewController, BottomSheet {
         super.viewDidLayoutSubviews()
         
         bottomSheetDelegate?.bottomSheet(self, didScrollTo: tableView.contentOffset)
+    
+        // Make sure the content is always at least as high as the table view, to prevent the sheet
+        // getting stuck half-way.
+        if tableView.contentSize.height < tableView.bounds.height {
+            tableView.contentSize.height = tableView.bounds.height
+        }
     }
     
     // MARK: - Table view data source
