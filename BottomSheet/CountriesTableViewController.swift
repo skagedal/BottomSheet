@@ -22,6 +22,7 @@ class CountriesTableViewController: UITableViewController, BottomSheet {
         tableView.contentInset.top = maxVisibleContentHeight
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
+        tableView.decelerationRate = .fast
     }
     
     override func viewDidLayoutSubviews() {
@@ -47,5 +48,21 @@ class CountriesTableViewController: UITableViewController, BottomSheet {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // MARK: - Scroll view delegate
+    
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let targetOffset = targetContentOffset.pointee.y
+        let pulledUpOffset: CGFloat = 0
+        let pulledDownOffset: CGFloat = -maxVisibleContentHeight
+        
+        if (pulledDownOffset...pulledUpOffset).contains(targetOffset) {
+            if velocity.y < 0 {
+                targetContentOffset.pointee.y = pulledDownOffset
+            } else {
+                targetContentOffset.pointee.y = pulledUpOffset
+            }
+        }
     }
 }
