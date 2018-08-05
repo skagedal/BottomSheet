@@ -14,15 +14,22 @@ protocol BottomSheet: AnyObject {
 
 typealias BottomSheetViewController = UIViewController & BottomSheet
 
-class BottomSheetContainerView: UIView {
+protocol BottomSheetChrome: AnyObject {
+    var topContentInset: CGFloat { get }
+}
+
+typealias BottomSheetChromeViewController = UIViewController & BottomSheetChrome
+
+private class BottomSheetContainerView: UIView {
  
     private let mainView: UIView
     private let sheetView: UIView
-    private let sheetBackground = BottomSheetBackgroundView()
+    private let chromeView: UIView
     private var sheetBackgroundTopConstraint: NSLayoutConstraint? = nil
 
-    init(mainView: UIView, sheetView: UIView) {
+    init(mainView: UIView, chromeView: UIView, sheetView: UIView) {
         self.mainView = mainView
+        self.chromeView = chromeView
         self.sheetView = sheetView
         
         super.init(frame: .zero)
@@ -50,14 +57,14 @@ class BottomSheetContainerView: UIView {
         ])
         
         // The sheet background
-        addSubview(sheetBackground)
-        sheetBackground.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = sheetBackground.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
+        addSubview(chromeView)
+        chromeView.translatesAutoresizingMaskIntoConstraints = false
+        let topConstraint = chromeView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
         NSLayoutConstraint.activate([
             topConstraint,
-            sheetBackground.heightAnchor.constraint(equalTo: heightAnchor),
-            sheetBackground.leftAnchor.constraint(equalTo: leftAnchor),
-            sheetBackground.rightAnchor.constraint(equalTo: rightAnchor)
+            chromeView.heightAnchor.constraint(equalTo: heightAnchor),
+            chromeView.leftAnchor.constraint(equalTo: leftAnchor),
+            chromeView.rightAnchor.constraint(equalTo: rightAnchor)
             ])
         sheetBackgroundTopConstraint = topConstraint
 
@@ -75,7 +82,7 @@ class BottomSheetContainerView: UIView {
     // MARK: - UIView overrides
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        if sheetBackground.bounds.contains(sheetBackground.convert(point, from: self)) {
+        if chromeView.bounds.contains(chromeView.convert(point, from: self)) {
             return sheetView.hitTest(sheetView.convert(point, from: self), with: event)
         }
         return mainView.hitTest(mainView.convert(point, from: self), with: event)
@@ -86,17 +93,21 @@ class BottomSheetContainerView: UIView {
 class BottomSheetContainerViewController: UIViewController {
 
     private let mainViewController: UIViewController
+    private let chromeViewController: BottomSheetChromeViewController
     private let sheetViewController: BottomSheetViewController
     private lazy var bottomSheetContainerView = BottomSheetContainerView(mainView: mainViewController.view,
+                                                                         chromeView: chromeViewController.view,
                                                                          sheetView: sheetViewController.view)
     
-    init(mainViewController: UIViewController, sheetViewController: BottomSheetViewController) {
+    init(mainViewController: UIViewController, chromeViewController: BottomSheetChromeViewController, sheetViewController: BottomSheetViewController) {
         self.mainViewController = mainViewController
+        self.chromeViewController = chromeViewController
         self.sheetViewController = sheetViewController
         
         super.init(nibName: nil, bundle: nil)
         
         addChild(mainViewController)
+        addChild(chromeViewController)
         addChild(sheetViewController)
         
         sheetViewController.bottomSheetDelegate = self
@@ -114,6 +125,7 @@ class BottomSheetContainerViewController: UIViewController {
         super.viewDidLoad()
 
         mainViewController.didMove(toParent: self)
+        chromeViewController.didMove(toParent: self)
         sheetViewController.didMove(toParent: self)
     }
     

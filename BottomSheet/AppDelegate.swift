@@ -14,8 +14,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         
         let mapViewController = MapViewController()
+        let chromeViewController = StandardBottomSheetChromeViewController()
         let shortcutsViewController = CountriesTableViewController()
         window.rootViewController = BottomSheetContainerViewController(mainViewController: mapViewController,
+                                                                       chromeViewController: chromeViewController,
                                                                        sheetViewController: shortcutsViewController)
         window.makeKeyAndVisible()
         self.window = window

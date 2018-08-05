@@ -12,7 +12,7 @@
 		F4EAE159210FBD4100487323 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EAE158210FBD4100487323 /* MapViewController.swift */; };
 		F4EAE15B210FBD4C00487323 /* CountriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EAE15A210FBD4C00487323 /* CountriesTableViewController.swift */; };
 		F4EAE15D210FBD5B00487323 /* BottomSheetContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EAE15C210FBD5B00487323 /* BottomSheetContainerViewController.swift */; };
-		F4EAE15F2110884E00487323 /* BottomSheetBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EAE15E2110884E00487323 /* BottomSheetBackgroundView.swift */; };
+		F4EAE15F2110884E00487323 /* StandardBottomSheetChromeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EAE15E2110884E00487323 /* StandardBottomSheetChromeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +23,7 @@
 		F4EAE158210FBD4100487323 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		F4EAE15A210FBD4C00487323 /* CountriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountriesTableViewController.swift; sourceTree = "<group>"; };
 		F4EAE15C210FBD5B00487323 /* BottomSheetContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetContainerViewController.swift; sourceTree = "<group>"; };
-		F4EAE15E2110884E00487323 /* BottomSheetBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetBackgroundView.swift; sourceTree = "<group>"; };
+		F4EAE15E2110884E00487323 /* StandardBottomSheetChromeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardBottomSheetChromeViewController.swift; sourceTree = "<group>"; };
 		F4EAE160211508DE00487323 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,7 +62,7 @@
 				F4EAE14F210FBD0100487323 /* LaunchScreen.storyboard */,
 				F4EAE146210FBCFE00487323 /* AppDelegate.swift */,
 				F4EAE15C210FBD5B00487323 /* BottomSheetContainerViewController.swift */,
-				F4EAE15E2110884E00487323 /* BottomSheetBackgroundView.swift */,
+				F4EAE15E2110884E00487323 /* StandardBottomSheetChromeViewController.swift */,
 				F4EAE158210FBD4100487323 /* MapViewController.swift */,
 				F4EAE15A210FBD4C00487323 /* CountriesTableViewController.swift */,
 			);
@@ -141,7 +141,7 @@
 				F4EAE15B210FBD4C00487323 /* CountriesTableViewController.swift in Sources */,
 				F4EAE147210FBCFE00487323 /* AppDelegate.swift in Sources */,
 				F4EAE159210FBD4100487323 /* MapViewController.swift in Sources */,
-				F4EAE15F2110884E00487323 /* BottomSheetBackgroundView.swift in Sources */,
+				F4EAE15F2110884E00487323 /* StandardBottomSheetChromeViewController.swift in Sources */,
 				F4EAE15D210FBD5B00487323 /* BottomSheetContainerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
