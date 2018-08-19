@@ -15,7 +15,7 @@ protocol BottomSheet: AnyObject {
 typealias BottomSheetViewController = UIViewController & BottomSheet
 
 protocol BottomSheetChrome: AnyObject {
-    var topContentInset: CGFloat { get }
+    var topChromeHeight: CGFloat { get }
 }
 
 typealias BottomSheetChromeViewController = UIViewController & BottomSheetChrome
@@ -24,12 +24,14 @@ private class BottomSheetContainerView: UIView {
  
     private let mainView: UIView
     private let sheetView: UIView
+    private let topChromeHeight: CGFloat
     private let chromeView: UIView
     private var sheetBackgroundTopConstraint: NSLayoutConstraint? = nil
 
-    init(mainView: UIView, chromeView: UIView, sheetView: UIView) {
+    init(mainView: UIView, chromeView: UIView, topChromeHeight: CGFloat, sheetView: UIView) {
         self.mainView = mainView
         self.chromeView = chromeView
+        self.topChromeHeight = topChromeHeight
         self.sheetView = sheetView
         
         super.init(frame: .zero)
@@ -74,7 +76,7 @@ private class BottomSheetContainerView: UIView {
         NSLayoutConstraint.activate([
             sheetView.leftAnchor.constraint(equalTo: leftAnchor),
             sheetView.rightAnchor.constraint(equalTo: rightAnchor),
-            sheetView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            sheetView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: topChromeHeight),
             sheetView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
@@ -97,6 +99,7 @@ class BottomSheetContainerViewController: UIViewController {
     private let sheetViewController: BottomSheetViewController
     private lazy var bottomSheetContainerView = BottomSheetContainerView(mainView: mainViewController.view,
                                                                          chromeView: chromeViewController.view,
+                                                                         topChromeHeight: chromeViewController.topChromeHeight,
                                                                          sheetView: sheetViewController.view)
     
     init(mainViewController: UIViewController, chromeViewController: BottomSheetChromeViewController, sheetViewController: BottomSheetViewController) {

@@ -6,9 +6,28 @@ import UIKit
 
 private let borderWidth: CGFloat = 1
 private let cornerRadius: CGFloat = 12
+private let topChromeHeight: CGFloat = 8
+private let handleBarSize = CGSize(width: 24, height: 2)
 
-class StandardBottomSheetChromeView: UIView {
+private class HandleBarView: UIView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
+        backgroundColor = .black
+        layer.cornerRadius = handleBarSize.height / 2
+    }
+    
+    required init?(coder aDecoder: NSCoder) { fatalError() }
+
+    override var intrinsicContentSize: CGSize {
+        return handleBarSize
+    }
+}
+
+private class StandardBottomSheetChromeView: UIView {
+    let topChromeHeight: CGFloat = 16
+    let topChromeLayoutGuide = UILayoutGuide()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -16,6 +35,22 @@ class StandardBottomSheetChromeView: UIView {
         layer.cornerRadius = cornerRadius
         layer.borderColor = UIColor.lightGray.cgColor
         layer.borderWidth = borderWidth
+        
+        addLayoutGuide(topChromeLayoutGuide)
+        NSLayoutConstraint.activate([
+            topChromeLayoutGuide.leftAnchor.constraint(equalTo: leftAnchor),
+            topChromeLayoutGuide.rightAnchor.constraint(equalTo: rightAnchor),
+            topChromeLayoutGuide.topAnchor.constraint(equalTo: topAnchor),
+            topChromeLayoutGuide.heightAnchor.constraint(equalToConstant: topChromeHeight)
+        ])
+     
+        let handleBar = HandleBarView()
+        handleBar.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(handleBar)
+        NSLayoutConstraint.activate([
+            handleBar.centerXAnchor.constraint(equalTo: topChromeLayoutGuide.centerXAnchor),
+            handleBar.centerYAnchor.constraint(equalTo: topChromeLayoutGuide.centerYAnchor)
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,9 +68,13 @@ class StandardBottomSheetChromeView: UIView {
 }
 
 class StandardBottomSheetChromeViewController: BottomSheetChromeViewController {
-    let topContentInset: CGFloat = 0
+    private let chromeView = StandardBottomSheetChromeView()
+    
+    var topChromeHeight: CGFloat {
+        return chromeView.topChromeHeight
+    }
     
     override func loadView() {
-        self.view = StandardBottomSheetChromeView()
+        self.view = chromeView
     }
 }
